@@ -4,3 +4,5 @@ create table book (
     title varchar(200) not null,
     isbn varchar(20) not null
 );
+
+insert into book (title, isbn) values ('Lord of the Rings', '123-X-123-X');

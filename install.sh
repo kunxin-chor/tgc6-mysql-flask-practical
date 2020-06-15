@@ -9,4 +9,4 @@ cd phpmyadmin
 composer update --no-dev
 yarn install
 cp config.sample.inc.php config.inc.php
-# Remember to set AllowNoPassword (line 38 in config.inc.php) to false
+# Remember to set AllowNoPassword (line 32 in config.inc.php) to false
