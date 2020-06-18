@@ -91,3 +91,18 @@ select * from author where first_name like "%lew"
 /* select all authors whose first name contains "lew" anywhere */
 select * from author where first_name like "%lew%"
 ```
+## JOINS
+
+Join employees on office code where the emplyoee's officecode matches the office code in the offices table.
+THEN select the last name, first name, city, country, addressLine and addressLine 2 columns
+```
+SELECT lastName, firstName, city, country, addressLine1, addressLine2 
+FROM employees INNER JOIN offices ON employees.officeCode = offices.officeCode
+```
+
+Selct all emplyoees where their offices are in USA
+```
+SELECT * FROM employees JOIN offices
+ ON employees.officeCode = offices.officeCode
+ WHERE country="USA" 
+```
