@@ -122,3 +122,62 @@ ON orderdetails.orderNumber = orders.orderNumber
 JOIN customers
 ON orders.customerNumber = customers.customerNumber
 ```
+
+## sorting
+```
+SELECT * FROM customers order by creditLimit DESC
+```
+
+## Group By
+Group all employees by their city and count how many there are in each group
+```
+SELECT city, count(*)  FROM employees JOIN offices 
+ON employees.officeCode = offices.officeCode
+group by city
+
+```
+
+## Order of the select claues
+```
+SELECT city, count(*)  FROM employees JOIN offices 
+ON employees.officeCode = offices.officeCode
+WHERE country="USA"
+group by city
+order by count(*) DESC
+limit 2
+```
+
+1. JOIN
+2. WHERE
+3. GROUP By
+4. SELECT
+5. ORDER By
+6. limit
+
+
+## Aggregate functions
+
+Show the sum of credit limit for all the customers in each country
+```
+SELECT country, SUM(creditLimit) FROM customers
+GROUP BY country
+```
+
+Show the maximum credit limit in each country
+
+```
+SELECT country, MAX(creditLimit) FROM customers
+GROUP BY country
+```
+
+Show the minimum credit limit in each country
+```
+SELECT country, MIN(creditLimit) FROM customers
+GROUP BY country
+```
+
+Show the average credit limit in each country
+```
+SELECT country, AVG(creditLimit) FROM customers
+GROUP BY country
+```
