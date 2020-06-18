@@ -106,3 +106,19 @@ SELECT * FROM employees JOIN offices
  ON employees.officeCode = offices.officeCode
  WHERE country="USA" 
 ```
+
+If we want to select a column that is repeated on both side, we must specify a table name in front of it:
+```
+SELECT  products.productCode, productName, orderNumber, quantityOrdered FROM products JOIN orderdetails
+ON products.productCode = orderdetails.productCode
+```
+
+Find all the customers and the name of the product they have ordered and the quantity ordred:
+```
+SELECT customerName, productName, quantityOrdered FROM products JOIN orderdetails
+ON products.productCode = orderdetails.productCode
+JOIN orders
+ON orderdetails.orderNumber = orders.orderNumber
+JOIN customers
+ON orders.customerNumber = customers.customerNumber
+```
