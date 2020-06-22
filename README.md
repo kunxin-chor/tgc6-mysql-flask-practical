@@ -15,6 +15,14 @@ To setup PHPMyAdmin for GitPod:
 5. At the browser, add `/phpmyadmin` to the end of the URL in the address bar
 6. Login with user `root` and no password.
 
+# Installing existing database
+
+At the terminal, type in
+
+```
+mysql -u root < chinook-sql.sql
+```
+
 # Create database
 
 ## Create database
