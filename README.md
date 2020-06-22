@@ -23,6 +23,12 @@ At the terminal, type in
 mysql -u root < chinook-sql.sql
 ```
 
+# Logging in to MySQL client
+
+```
+mysql -u root
+```
+
 # Create database
 
 ## Create database

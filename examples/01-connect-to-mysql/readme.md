@@ -4,7 +4,7 @@
 
 ```
 pip3 install pymysql
-pip3 install dot-env
+pip3 install python-dotenv
 ```
 
 2. Create an .env file in the same folder as your `app.py`
