@@ -29,3 +29,5 @@ cursor.execute(sql)
 
 for each_employee in cursor:
     print(each_employee)
+
+
