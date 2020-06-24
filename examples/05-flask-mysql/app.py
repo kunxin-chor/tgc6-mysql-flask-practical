@@ -64,13 +64,32 @@ def process_create_artist():
     # get the id of the most recently inserted row
     new_artist_id = cursor.lastrowid
 
-    print(sql)
-
     # Whenever we change the database, we have to remember to COMMIT
     # the transactions
     conn.commit()
 
     return "new artist id = " + str(new_artist_id)
+
+
+@app.route('/genre/create')
+def show_create_genre_form():
+    return render_template("create_genre_form.template.html")
+
+
+@app.route('/genre/create', methods=["POST"])
+def process_create_genre():
+    genre = request.form.get('genre')
+
+    sql = f"""
+    insert into Genre (Name) values ('{genre}')
+    """
+
+    cursor.execute(sql)
+
+    # Must commit all the changes
+    conn.commit()
+
+    return "Form recieved"
 
 
 # "magic code" -- boilerplate
