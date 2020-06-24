@@ -92,6 +92,69 @@ def process_create_genre():
     return "Form recieved"
 
 
+# create a new album
+@app.route('/album/create')
+def show_create_album_form():
+
+    # fetch all the possible artists from the database
+    sql = """
+    select * from Artist
+    """
+
+    cursor.execute(sql)
+
+    # pass all the artists into the template to render as part of
+    # the drop-down (or the <SELECT>)
+    return render_template("create_album.template.html", all_artists=cursor)
+
+
+# Process the form
+@app.route('/album/create', methods=["POST"])
+def process_create_album():
+    title = request.form.get("title")
+    artist = request.form.get("artist")
+
+    sql = f"""
+    insert into Album (Title, ArtistId) values ("{title}", {artist})
+    """
+
+    print(sql)
+    cursor.execute(sql)
+
+    conn.commit()
+    return "form recieved"
+
+
+# UPDATE ROUTE
+# 1. we a route to display the form PLUS the existing data
+# 2. we also need a route to process the form
+
+# display the form and the existing information
+@app.route('/artist/update/<artist_id>')
+def display_update_artist_form(artist_id):
+    # the following SHOULD only have one result
+    sql = f"select * from Artist where ArtistId={artist_id}"
+    cursor.execute(sql)
+    artist = cursor.fetchone()
+    return render_template("update_artist_form.template.html", artist=artist)
+
+
+@app.route('/artist/update/<artist_id>', methods=["POST"])
+def process_update_artist(artist_id):
+    artist_name = request.form.get('artist_name')
+    sql = f"UPDATE Artist SET Name='{artist_name}' WHERE ArtistId={artist_id}"
+    print(sql)
+    cursor.execute(sql)
+    conn.commit() 
+    return redirect(url_for('show_all_artists'))
+
+
+@app.route('/artists')
+def show_all_artists():
+    sql = "select * from Artist"
+    cursor.execute(sql)
+    return render_template('all_artists.template.html', all_artists=cursor)
+
 # "magic code" -- boilerplate
 if __name__ == '__main__':
     app.run(host=os.environ.get('IP'),
