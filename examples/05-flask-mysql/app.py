@@ -202,6 +202,22 @@ def process_update_artist(artist_id):
 
     return redirect(url_for('show_all_artists'))
 
+## SHOW ALL TRACKS AND UPDATE
+
+@app.route('/tracks')
+def show_tracks():
+    sql = """
+        select Track.TrackId, Track.Name as "TrackName", Title,
+                Genre.Name as "GenreName", MediaType.Name as "MediaTypeName",
+                Composer  from Track join
+            Album on Track.AlbumId = Album.AlbumId join
+            MediaType on Track.MediaTypeId = MediaType.MediaTypeId  join
+            Genre on Track.GenreId = Genre.GenreId
+    """
+
+    cursor.execute(sql)
+    return render_template('track.template.html', cursor=cursor)
+
 
 # we want the url to be /track/update/3
 # this means we are editing the track with the TrackId of 3
@@ -235,19 +251,7 @@ def show_update_track_form(track_id):
                            genres=genre_cursor)
 
 
-@app.route('/tracks')
-def show_tracks():
-    sql = """
-        select Track.TrackId, Track.Name as "TrackName", Title,
-                Genre.Name as "GenreName", MediaType.Name as "MediaTypeName",
-                Composer  from Track join
-            Album on Track.AlbumId = Album.AlbumId join
-            MediaType on Track.MediaTypeId = MediaType.MediaTypeId  join
-            Genre on Track.GenreId = Genre.GenreId
-    """
 
-    cursor.execute(sql)
-    return render_template('track.template.html', cursor=cursor)
 
 
 @app.route('/track/update/<track_id>', methods=["POST"])
