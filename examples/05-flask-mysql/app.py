@@ -125,6 +125,40 @@ def process_create_album():
     return "form recieved"
 
 
+# the album_id parameter will hold the primary key of the album that we
+#  are updating
+# eg /ablum/update/3 will mean to update album with the AlbumId of 3
+@app.route('/album/update/<album_id>')
+def show_update_album_form(album_id):
+
+    sql = f"select * from Album where AlbumId = {album_id}"
+    cursor.execute(sql)
+
+    # since there can only be one result (because we are getting an ablum by
+    #  primary key)
+    # we use the fetchone function
+    album = cursor.fetchone()
+
+    cursor.execute("select * from Artist")
+
+    return render_template("update_album.template.html", all_artists=cursor, 
+                           album=album)
+
+
+# this route process the form
+@app.route('/album/update/<album_id>', methods=["POST"])
+def process_update_album(album_id):
+    title = request.form.get('title')
+    artist = request.form.get('artist')
+
+    sql = f"""update Album set Title="{title}", ArtistId={artist} 
+                where AlbumId={album_id}
+    """
+    cursor.execute(sql)
+    conn.commit()
+    print(sql)
+    return "form recieved"
+
 # UPDATE ROUTE
 # 1. we a route to display the form PLUS the existing data
 # 2. we also need a route to process the form
@@ -145,7 +179,7 @@ def process_update_artist(artist_id):
     sql = f"UPDATE Artist SET Name='{artist_name}' WHERE ArtistId={artist_id}"
     print(sql)
     cursor.execute(sql)
-    conn.commit() 
+    conn.commit()
     return redirect(url_for('show_all_artists'))
 
 
@@ -154,6 +188,7 @@ def show_all_artists():
     sql = "select * from Artist"
     cursor.execute(sql)
     return render_template('all_artists.template.html', all_artists=cursor)
+
 
 # "magic code" -- boilerplate
 if __name__ == '__main__':
