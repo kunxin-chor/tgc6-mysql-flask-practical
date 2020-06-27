@@ -202,8 +202,8 @@ def process_update_artist(artist_id):
 
     return redirect(url_for('show_all_artists'))
 
-## SHOW ALL TRACKS AND UPDATE
 
+# SHOW ALL TRACKS AND UPDATE
 @app.route('/tracks')
 def show_tracks():
     sql = """
@@ -251,13 +251,10 @@ def show_update_track_form(track_id):
                            genres=genre_cursor)
 
 
-
-
-
 @app.route('/track/update/<track_id>', methods=["POST"])
 def process_update_track(track_id):
     sql = f"""
-        update Track 
+        update Track
         set Name='{request.form.get('name')}',
             AlbumId={request.form.get('album')},
             MediaTypeId={request.form.get('media_type')},
@@ -273,6 +270,20 @@ def process_update_track(track_id):
     cursor.execute(sql)
     conn.commit()
     return "track has been updated"
+
+
+@app.route('/track/delete/<track_id>')
+def confirm_delete_track(track_id):
+    cursor.execute(f"select * from Track where trackId = {track_id}")
+    track = cursor.fetchone()
+    return render_template('confirm_delete_track.template.html', track=track)
+
+
+@app.route('/track/delete/<track_id>', methods=["POST"])
+def process_delete_track(track_id):
+    sql = f"delete from Track where TrackId={track_id}"
+    cursor.execute(sql)
+    return redirect(url_for("show_tracks"))
 
 
 @app.route('/artists')

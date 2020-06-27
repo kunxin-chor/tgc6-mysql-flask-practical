@@ -12,29 +12,12 @@
   </head>
   <body>
     <div class="container">
-        <table class="table">
-        <tr>
-            <th>Name</th>
-            <th>Ablum</th>
-            <th>Media Type</th>
-            <th>Genre</th>
-            <th>Composer</th>
-            <th></th>
-        </tr>
-        {% for track in cursor %}
-        <tr>
-            <td>{{track.TrackName}}</td>
-            <td>{{track.Title}}</td>
-            <td>{{track.MediaTypeName}}</td>
-            <td>{{track.GenreName}}</td>
-            <td>{{track.Composer}}</td>
-            <td>
-                <a href="{{url_for('show_update_track_form', track_id=track.TrackId)}}">Edit</a>
-                <a href="{{url_for('confirm_delete_track', track_id=track.TrackId)}}">Delete</a>
-            </td>
-        </tr>
-        {% endfor%}
-        </table>
+        <div class="alert alert-danger">
+        Are you sure you want to delete the track : {{track.Name}}
+            <form method="POST">
+                <input type="submit" class="btn btn-danger" value="Confirm"/>
+            </form>
+        </div>
     </div>
 
     <!-- Optional JavaScript -->
