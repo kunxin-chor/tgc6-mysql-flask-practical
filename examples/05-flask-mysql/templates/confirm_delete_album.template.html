@@ -11,16 +11,15 @@
     <title>Hello, world!</title>
   </head>
   <body>
-    {% for album in cursor %}
-    <div class="card">
-        <div class="card-body">
-            <h5 class="card-title">{{album.Title}}</h5>
-            <p class="card-text">{{album.Name}}</p>
-            <a href="{{ url_for('show_update_album_form', album_id=album.AlbumId ) }}" class="btn btn-primary">Edit</a>
-            <a href="{{ url_for('show_delete_album', album_id=album.AlbumId) }}" class="btn btn-primary">Delete</a>
+    <div class="container">
+        <div class="alert alert-danger">
+            Are you sure you want to delete {{album.Title}}?
         </div>
+        <form method="POST">
+            <input type="submit" value="Yes" class="btn btn-danger">
+            <a href="#" class="btn btn-primary">No</a>
+        </form>
     </div>
-    {% endfor %}
 
     <!-- Optional JavaScript -->
     <!-- jQuery first, then Popper.js, then Bootstrap JS -->

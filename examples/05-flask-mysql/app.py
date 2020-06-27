@@ -35,7 +35,7 @@ def show_tracks():
 def show_ablums():
     # create the sql statement
     sql = """
-    select * from Album
+    select * from Album join Artist on Album.ArtistId = Artist.ArtistId
     """
 
     cursor.execute(sql)
@@ -157,7 +157,26 @@ def process_update_album(album_id):
     cursor.execute(sql)
     conn.commit()
     print(sql)
-    return "form recieved"
+    return redirect(url_for('show_ablums'))
+
+
+@app.route('/album/delete/<album_id>')
+def show_delete_album(album_id):
+    sql = f"select * from Album where AlbumId = {album_id}"
+    cursor.execute(sql)
+    album = cursor.fetchone()
+    return render_template('confirm_delete_album.template.html', album=album)
+
+
+@app.route('/album/delete/<album_id>', methods=["POST"])
+def process_delete_album(album_id):
+    # WARNING! Make sure you have a WHERE clause or else you will end up
+    # deleting the ENTRE table
+    sql = f"delete from Album where AlbumId={album_id}"
+    cursor.execute(sql)
+    conn.commit()
+    return redirect(url_for('show_ablums'))
+    
 
 # UPDATE ROUTE
 # 1. we a route to display the form PLUS the existing data
@@ -179,7 +198,8 @@ def process_update_artist(artist_id):
     sql = f"UPDATE Artist SET Name='{artist_name}' WHERE ArtistId={artist_id}"
     print(sql)
     cursor.execute(sql)
-    conn.commit()
+    conn.commit()    
+
     return redirect(url_for('show_all_artists'))
 
 
