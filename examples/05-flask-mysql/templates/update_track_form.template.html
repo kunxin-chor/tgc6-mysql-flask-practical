@@ -1,0 +1,95 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+
+    <title>Hello, world!</title>
+  </head>
+  <body>
+    <div class="container">
+        <form method="POST">
+            <!-- Name-->
+            <div class="form-group">
+                <label>Name:</label>
+                <input type="text" class="form-control" name="name" value="{{track.Name}}"/>
+            </div>
+
+            <!-- Album that the track belongs to -->
+            <div class="form-group">
+                <label>Album</label>
+                <select class="form-control" name="album">
+                    {%for a in albums %}
+                        {% if a.AlbumId == track.AlbumId %}
+                        <option value="{{a.AlbumId}}" selected>{{a.Title}}</option>
+                        {% else %}
+                        <option value="{{a.AlbumId}}">{{a.Title}}</option>
+                        {% endif %}
+                    {%endfor%}
+                </select>
+            </div>
+
+            <!-- Media Type that the track belongs to -->
+            <div class="form-group">
+                <label>Genre</label>
+                <select class="form-control" name="genre">
+                    {%for g in genres %}
+                        {% if g.GenreId == track.GenreId %}
+                        <option value="{{g.GenreId}}" selected>{{g.Name}}</option>
+                        {% else %}
+                        <option value="{{g.GenreId}}">{{g.Name}}</option>
+                        {% endif %}
+                    {% endfor %}
+                </select>
+            </div>
+
+            <!-- Media Type that the track belongs to -->
+            <div class="form-group">
+                <label>Media Type</label>
+                <select class="form-control" name="media_type">
+                    {%for m in media_types %}
+                        {% if m.MediaTypeId == track.MediaTypeId %}
+                        <option value="{{m.MediaTypeId}}" selected>{{m.Name}}</option>
+                        {% else %}
+                        <option value="{{m.MediaTypeId}}">{{m.Name}}</option>
+                        {% endif %}
+                    {% endfor %}
+                </select>
+            </div>
+
+            <div class="form-group">
+                <label>Composer:</label>
+                <input type="text" name="composer" value="{{track.Composer}}" class="form-control" />
+            </div>
+
+            <div class="form-group">
+                <label>Duration:</label>
+                <input type="text" name="milliseconds" value="{{track.Milliseconds}}" class="form-control"/>
+            </div>
+
+            <div class="form-group">
+                <label>File Size</label>
+                <input type="text" name="bytes" value="{{track.Bytes}}" class="form-control" />
+            </div>
+
+            <div class="form-group">
+                <label>Unit Price</label>
+                <input type="text" name="unit_price" value="{{track.UnitPrice}}" class="form-control"/>
+            </div>
+
+            <input type="submit" class="btn btn-primary"/>
+            
+        </form>
+    </div>
+
+    <!-- Optional JavaScript -->
+    <!-- jQuery first, then Popper.js, then Bootstrap JS -->
+    <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
+  </body>
+</html>

@@ -19,16 +19,16 @@ cursor = conn.cursor(pymysql.cursors.DictCursor)
 app = Flask(__name__)
 
 
-@app.route("/tracks")
-def show_tracks():
-    # create the sql statement
-    sql = """
-        select * from Track
-    """
+# @app.route("/tracks")
+# def show_tracks():
+#     # create the sql statement
+#     sql = """
+#         select * from Track
+#     """
 
-    cursor.execute(sql)
+#     cursor.execute(sql)
 
-    return render_template("track.template.html", cursor=cursor)
+#     return render_template("track.template.html", cursor=cursor)
 
 
 @app.route("/albums")
@@ -141,7 +141,7 @@ def show_update_album_form(album_id):
 
     cursor.execute("select * from Artist")
 
-    return render_template("update_album.template.html", all_artists=cursor, 
+    return render_template("update_album.template.html", all_artists=cursor,
                            album=album)
 
 
@@ -176,7 +176,7 @@ def process_delete_album(album_id):
     cursor.execute(sql)
     conn.commit()
     return redirect(url_for('show_ablums'))
-    
+
 
 # UPDATE ROUTE
 # 1. we a route to display the form PLUS the existing data
@@ -198,9 +198,77 @@ def process_update_artist(artist_id):
     sql = f"UPDATE Artist SET Name='{artist_name}' WHERE ArtistId={artist_id}"
     print(sql)
     cursor.execute(sql)
-    conn.commit()    
+    conn.commit()
 
     return redirect(url_for('show_all_artists'))
+
+
+# we want the url to be /track/update/3
+# this means we are editing the track with the TrackId of 3
+@app.route('/track/update/<track_id>')
+def show_update_track_form(track_id):
+
+    # track information
+    sql = f"select * from Track where TrackId = {track_id}"
+    cursor.execute(sql)
+    track = cursor.fetchone()
+
+    # create a cursor to fetch all possible albums
+    album_cursor = conn.cursor(pymysql.cursors.DictCursor)
+    sql = "select * from Album"
+    album_cursor.execute(sql)
+
+    # create a cursor to fetch all possible media type
+    media_type_cursor = conn.cursor(pymysql.cursors.DictCursor)
+    sql = "select * from MediaType"
+    media_type_cursor.execute(sql)
+
+    # create a cursor to fetch all the possible genre
+    genre_cursor = conn.cursor(pymysql.cursors.DictCursor)
+    sql = "select * from Genre"
+    genre_cursor.execute(sql)
+
+    return render_template('update_track_form.template.html',
+                           track=track,
+                           albums=album_cursor,
+                           media_types=media_type_cursor,
+                           genres=genre_cursor)
+
+
+@app.route('/tracks')
+def show_tracks():
+    sql = """
+        select Track.TrackId, Track.Name as "TrackName", Title,
+                Genre.Name as "GenreName", MediaType.Name as "MediaTypeName",
+                Composer  from Track join
+            Album on Track.AlbumId = Album.AlbumId join
+            MediaType on Track.MediaTypeId = MediaType.MediaTypeId  join
+            Genre on Track.GenreId = Genre.GenreId
+    """
+
+    cursor.execute(sql)
+    return render_template('track.template.html', cursor=cursor)
+
+
+@app.route('/track/update/<track_id>', methods=["POST"])
+def process_update_track(track_id):
+    sql = f"""
+        update Track 
+        set Name='{request.form.get('name')}',
+            AlbumId={request.form.get('album')},
+            MediaTypeId={request.form.get('media_type')},
+            GenreId={request.form.get('genre')},
+            Composer="{request.form.get('composer')}",
+            Milliseconds="{request.form.get('milliseconds')}",
+            Bytes="{request.form.get('bytes')}",
+            UnitPrice="{request.form.get('unit_price')}"
+        where
+            TrackId={track_id}
+    """
+    print(sql)
+    cursor.execute(sql)
+    conn.commit()
+    return "track has been updated"
 
 
 @app.route('/artists')
